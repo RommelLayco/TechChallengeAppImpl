@@ -31,7 +31,14 @@ To deploy the application complete the following steps
 
 3. Create or update a config file containing the terraform variables see `config/dev.tfvars` for an example
 
-4. Review then apply the configuration
+4. Set the following environment variable to set the rds Password
+
+    ```bash
+    # Replace password with a secure password
+    export TF_VAR_db_admin_password=password
+    ```
+
+5. Review then apply the configuration
 
     ```bash
     terraform apply -var-file config/dev.tfvars

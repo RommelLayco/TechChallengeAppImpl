@@ -1,4 +1,6 @@
-# Define providers
+#########################################
+#          DEFINE PROVIDERS             #
+#########################################
 
 provider "aws" {
   region  = var.region
@@ -28,7 +30,9 @@ provider "aws" {
 # }
 
 
-# Create VPC for eks cluster and rds
+#########################################
+#               CREATE VPC              #
+#########################################
 
 locals {
   # We create 4 subnets, 2 private and 2 public
@@ -53,5 +57,48 @@ module "vpc" {
   public_subnets  = slice(local.subnets, 2, 4)
 
   enable_nat_gateway = true
+
+}
+
+
+#########################################
+#             CREATE RDS                #
+#########################################
+
+module "db" {
+  source  = "terraform-aws-modules/rds/aws"
+  version = "~> 3.0"
+
+  identifier = lower(var.name)
+
+  engine               = "postgres"
+  engine_version       = "10.7"
+  family               = "postgres10"
+  major_engine_version = "10"
+
+  instance_class    = var.db_instance_type
+  allocated_storage = var.db_storage
+  multi_az          = true
+
+  name     = var.default_db_name
+  username = var.db_admin_user
+  password = var.db_admin_password
+  port     = "5432"
+
+
+  vpc_security_group_ids = [aws_security_group.aws_security_group.id]
+
+  maintenance_window = var.maintenance_window
+  backup_window      = var.backup_window
+
+  # DB subnet group
+  subnet_ids = module.vpc.private_subnets
+
+}
+
+resource "aws_security_group" "aws_security_group" {
+  name_prefix = "${var.name}-db-sg-"
+  description = "Security group attached to RDS instance"
+  vpc_id      = module.vpc.vpc_id
 
 }
