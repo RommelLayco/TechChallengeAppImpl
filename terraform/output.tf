@@ -17,3 +17,11 @@ output "db_name" {
 output "db_user" {
   value = nonsensitive(module.db.db_instance_username)
 }
+
+output "aws_region" {
+  value = var.region
+}
+
+output "cluster_name" {
+  value = module.eks.cluster_id
+}

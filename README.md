@@ -44,3 +44,11 @@ To deploy the application complete the following steps
     ```bash
     terraform apply -var-file config/dev.tfvars
     ```
+
+6. Update KubeConfig with the following command
+
+    ```bash
+    # You can get the values of the variables from the terraform outputs
+    # note aws_profile should contain credentials from the `KubeAdmin` Role
+    aws eks update-kubeconfig --region ${AWS_REGION} --profile ${AWS_PROFILE} --name ${CLUSTER_NAME}
+    ```
