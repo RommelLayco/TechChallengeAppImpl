@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mychart.fullname" . | lower }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "mychart.selectorLabels" . | nindent 6 }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        {{- include "mychart.selectorLabels" . | nindent 8 }}
+    spec:
+      initContainers:
+        - name: {{ include "mychart.fullname" . | lower }}-init
+          image: servian/techchallengeapp:0.9.0
+          imagePullPolicy: "IfNotPresent"
+          command: ['sh', '-c', './TechChallengeApp updatedb -s']
+          env:
+            - name: VTT_DBUSER
+              value: {{ .Values.config.dbUser }}
+            - name: VTT_DBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mychart.fullname" . | lower }}-secrets
+                  key: dbPassword
+            - name: VTT_DBNAME
+              value: {{ .Values.config.dbName }}
+            - name: VTT_DBPORT
+              value: {{ .Values.config.dbPort | quote }}
+            - name: VTT_DBHOST
+              value: {{ .Values.config.dbHost }}
+            - name: VTT_LISTENHOST
+              value: "0.0.0.0"
+            - name: VTT_LISTENPORT
+              value: {{ .Values.config.listenPort | quote }}
+
+      containers:
+      - name: {{ include "mychart.fullname" . | lower }}
+        image: servian/techchallengeapp:0.9.0
+        imagePullPolicy: "IfNotPresent"
+        command: ['sh', '-c', './TechChallengeApp serve']
+        env:
+          - name: VTT_DBUSER
+            value: {{ .Values.config.dbUser }}
+          - name: VTT_DBPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "mychart.fullname" . | lower }}-secrets
+                key: dbPassword
+          - name: VTT_DBNAME
+            value: {{ .Values.config.dbName }}
+          - name: VTT_DBPORT
+            value: {{ .Values.config.dbPort | quote }}
+          - name: VTT_DBHOST
+            value: {{ .Values.config.dbHost }}
+          - name: VTT_LISTENHOST
+            value: 0.0.0.0
+          - name: VTT_LISTENPORT
+            value: {{ .Values.config.listenPort | quote }}
+        ports:
+          - name: listenport
+            containerPort: {{ .Values.config.listenPort }}
+        # livenessProbe:
+        #   httpGet:
+        #     path: /healthcheck/
+        #     port: {{ .Values.config.listenPort }}
+        #   failureThreshold: 2
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   httpGet:
+        #     path: /healthcheck/
+        #     port: {{ .Values.config.listenPort }}
+        #   failureThreshold: 2
+        #   periodSeconds: 10
+

@@ -52,3 +52,17 @@ To deploy the application complete the following steps
     # note aws_profile should contain credentials from the `KubeAdmin` Role
     aws eks update-kubeconfig --region ${AWS_REGION} --profile ${AWS_PROFILE} --name ${CLUSTER_NAME}
     ```
+
+7. Install helm chart
+
+    ```bash
+    helm install app charts/application 
+    # replace password with the password of the database
+    helm upgrade app charts/application --install --set config.dbPassword=password 
+    ```
+
+8. Run the command to get the address of the load balancer
+
+    ```bash
+    kubectl get svc
+    ```

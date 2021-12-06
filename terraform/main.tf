@@ -102,8 +102,15 @@ resource "aws_security_group" "aws_security_group" {
   description = "Security group attached to RDS instance"
   vpc_id      = module.vpc.vpc_id
 
-}
+  ingress {
+    description      = "Allow database connections froom within VPC"
+    from_port        = 5432
+    to_port          = 5432
+    protocol         = "tcp"
+    cidr_blocks      = [module.vpc.vpc_cidr_block]
+  }
 
+}
 
 #########################################
 #             CREATE EKS                #
