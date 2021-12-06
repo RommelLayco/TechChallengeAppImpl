@@ -1,0 +1,10 @@
+replicaCount: 2
+
+config:
+  dbUser: postgres
+  dbName: app
+  dbPort: 5432
+  listenPort: 3000
+
+  # Update to database hostname
+  dbHost: PLACEHOLDER
