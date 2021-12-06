@@ -20,64 +20,53 @@ variable "vpc_cidr" {
 }
 
 variable "default_db_name" {
-  type = string
+  type        = string
   description = "Name of the default database for postgres RDS"
-  default = "app"  
+  default     = "app"
 }
 
 variable "db_admin_user" {
-  type = string
+  type        = string
   description = "Name of the default admin username for postgres RDS"
-  default = "postgres"  
+  default     = "postgres"
 }
 
 variable "db_admin_password" {
-  type = string
+  type        = string
   description = "Password for the default admin user"
 }
 
 variable "db_instance_type" {
-  type = string
+  type        = string
   description = "The instance type of the postgres RDS"
-  default = "db.t2.large"
+  default     = "db.t2.large"
 }
 
 variable "db_storage" {
-  type = number
+  type        = number
   description = "Size of the postgres RDS storage in GiB"
-  default = 10
-  }
+  default     = 10
+}
 
 variable "maintenance_window" {
-  type = string
+  type        = string
   description = "Maintenace Period of postgres RDS instance"
-  default = "Mon:00:00-Mon:03:00"
+  default     = "Mon:00:00-Mon:03:00"
 }
 
 variable "backup_window" {
-  type = string
+  type        = string
   description = "automated backup window of postgres RDS instance"
-  default = "03:00-06:00"
+  default     = "03:00-06:00"
 }
 
-# variable "cluster_name" {
-#   type        = string
-#   description = "Name of the cluster"
-# }
+variable "k8s_version" {
+  type        = string
+  description = "Kubernetes Version 1.21"
+  default     = "1.21"
+}
 
-
-# variable "k8s_version" {
-#   type        = string
-#   description = "Name of the cluster"
-# }
-
-# variable "ssh_public_key_value" {
-#   type        = string
-#   description = "The public key value used to ssh to worker nodes"
-# }
-
-# variable "node_group_configuration" {
-#   type = any
-#   description = "Configuration values for node groups"
-#   default = {}
-# }
+variable "ssh_public_key_value" {
+  type        = string
+  description = "A public ssh key. The private key pair will be used to ssh to the worker nodes"
+}

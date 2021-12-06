@@ -6,6 +6,7 @@ Implementation of the tech challenge App deployment
 
 * terraform
 * helm v3
+* In the aws account you are deploying this stack ensure that there is role called `KubeAdmin`. This role will be used for kubectl access to the cluster.
 
 ## Deployment
 
