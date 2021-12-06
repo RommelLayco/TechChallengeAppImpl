@@ -53,16 +53,20 @@ To deploy the application complete the following steps
     aws eks update-kubeconfig --region ${AWS_REGION} --profile ${AWS_PROFILE} --name ${CLUSTER_NAME}
     ```
 
-7. Install helm chart
+7. Copy the values.yaml and create a new file e.g. values-dev.yaml. These values will be used to deploy the helm chart
+
+8. Install helm chart
 
     ```bash
-    helm install app charts/application 
+    # replace values-dev.yaml with your created values file
     # replace password with the password of the database
-    helm upgrade app charts/application --install --set config.dbPassword=password 
+    helm upgrade app charts/application --install -f charts/application/values-dev.yaml --set config.dbPassword=password 
     ```
 
-8. Run the command to get the address of the load balancer
+9. Run the command to get the address of the load balancer
 
     ```bash
     kubectl get svc
     ```
+
+**NB** You may need to wait a couple of minutes for the load balancer to initiliase before you can attempt to connect.

@@ -6,5 +6,5 @@ config:
   dbPort: 5432
   listenPort: 3000
 
-  # remove
-  dbHost: testchallengedemo.czoleyqqvfdr.us-west-2.rds.amazonaws.com
+  # Update to database hostname
+  dbHost: PLACEHOLDER
