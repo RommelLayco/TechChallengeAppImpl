@@ -159,15 +159,8 @@ module "eks" {
 
   map_roles = [
     {
-      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/Envoy_Dev_Administrator"
-      username = "Envoy_Dev_Administrator"
-      groups = [
-        "system:masters"
-      ]
-    },
-    {
-      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/SiteReliabilityEngineer"
-      username = "SiteReliabilityEngineer"
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/KubeAdmin"
+      username = "KubeAdmin"
       groups = [
         "system:masters"
       ]
